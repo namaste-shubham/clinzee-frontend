@@ -4,8 +4,8 @@ const BrandValue = () => (
     <ul className="text-gray-700 space-y-3 text-lg text-left inline-block mx-auto">
       <li className="flex items-start gap-2"><span>✅</span> <span>Tough on stains, gentle on hands</span></li>
       <li className="flex items-start gap-2"><span>✅</span> <span>Affordable and effective</span></li>
-      <li className="flex items-start gap-2"><span>✅</span> <span>Trusted quality for Indian homes</span></li>
-      <li className="flex items-start gap-2"><span>✅</span> <span>Ideal for villages and small cities</span></li>
+      <li className="flex items-start gap-2"><span>✅</span> <span>Fresh fragrance that lasts all day</span></li>
+      <li className="flex items-start gap-2"><span>✅</span> <span>Eco-friendly & safe for your home</span></li>
     </ul>
   </section>
 );
