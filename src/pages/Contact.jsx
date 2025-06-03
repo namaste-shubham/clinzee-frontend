@@ -57,7 +57,7 @@ function Contact() {
     }
 
     try {
-      const response = await axios.post("http://localhost:9999/api/contact", formData);
+      const response = await axios.post("https://your-render-app.onrender.com/api/contact", formData);
       console.log("response:", response);
       // toast.success("Message sent successfully!");
       navigate("/thank-you");
