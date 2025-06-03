@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import IndiaFlag from "../assets/india-flag-xs.png"; // Adjust path if needed
+import axios from "axios";
+import toast from "react-hot-toast";
+import IndiaFlag from "../assets/india-flag-xs.png";
 
 function Contact() {
   const navigate = useNavigate();
@@ -10,57 +12,88 @@ function Contact() {
     phone: "",
     message: "",
   });
-  const [phoneError, setPhoneError] = useState("");
+
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    message: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // Reset error for the field
+    setErrors({ ...errors, [name]: "" });
+
     if (name === "phone") {
-      if (/^\d{0,10}$/.test(value)) {
-        setPhoneError("");
+      if (/^\d*$/.test(value)) {
         setFormData({ ...formData, phone: value });
       } else {
-        setPhoneError("Only 10-digit numbers are allowed.");
+        setErrors({ ...errors, phone: "Only numbers are allowed." });
       }
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { firstName, lastName, phone, message } = formData;
-    if (firstName && lastName && phone && message && !phoneError) {
+    const newErrors = {};
+    if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required.";
+    } else if (formData.phone.length !== 10) {
+      newErrors.phone = "Phone number must be 10 digits.";
+    }
+    if (!formData.message.trim()) newErrors.message = "Message is required.";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Please fill all the details.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:9999/api/contact", formData);
+      console.log("response:", response);
+      // toast.success("Message sent successfully!");
       navigate("/thank-you");
-    } else {
-      alert("Please fill in all fields correctly.");
+    } catch (error) {
+      console.error("Contact form error:", error.response?.data || error.message);
+      toast.error("Something went wrong. Try again.");
     }
   };
 
   return (
     <div className="pt-28 p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold text-blue-800 mb-6">Contact Us</h1>
-
+      <h1 className="text-2xl font-bold text-blue-800 mb-4">Contact Us</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-
         <div className="flex gap-4">
-          <input
-            name="firstName"
-            type="text"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="w-1/2 p-2 border rounded"
-          />
-          <input
-            name="lastName"
-            type="text"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="w-1/2 p-2 border rounded"
-          />
+          <div className="w-1/2">
+            <input
+              name="firstName"
+              type="text"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            />
+            {errors.firstName && <p className="text-red-600 text-sm mt-1">{errors.firstName}</p>}
+          </div>
+          <div className="w-1/2">
+            <input
+              name="lastName"
+              type="text"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            />
+            {errors.lastName && <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>}
+          </div>
         </div>
 
         <div>
@@ -79,19 +112,20 @@ function Contact() {
               className="w-full p-2 outline-none"
             />
           </div>
-          {phoneError && (
-            <p className="text-red-600 text-sm mt-1">{phoneError}</p>
-          )}
+          {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
         </div>
 
-        <textarea
-          name="message"
-          placeholder="Message"
-          rows={4}
-          value={formData.message}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
+        <div>
+          <textarea
+            name="message"
+            placeholder="Message"
+            rows={4}
+            value={formData.message}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+          {errors.message && <p className="text-red-600 text-sm mt-1">{errors.message}</p>}
+        </div>
 
         <button
           type="submit"
