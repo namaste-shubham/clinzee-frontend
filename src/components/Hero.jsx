@@ -1,52 +1,61 @@
-import { useEffect, useState } from 'react';
-import hero1 from '../assets/hero1.png';
-import hero2 from '../assets/hero2.png';
-// import hero3 from '../assets/hero3.png'
+import { useEffect, useState } from "react";
+import hero1 from "../assets/hero1.png";
+import hero2 from "../assets/hero2.png";
 
-const images = [hero1, hero2];
+const productImages = [hero1, hero2];
 
 const Hero = () => {
-  const [currentImage, setCurrentImage] = useState(images[0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const randomImage = images[Math.floor(Math.random() * images.length)];
-      setCurrentImage(randomImage);
-    }, 4000); // Change image every 4 seconds
-
+      setCurrentIndex((prevIndex) =>
+        prevIndex === productImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="pt-28 pb-16 px-4 bg-gradient-to-r from-blue-50 to-green-50">
-      <div className="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8">
+    <section className="bg-blue-50 pt-28 md:pt-32 pb-6 md:pb-10 px-4">
+
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10">
         
-        {/* Text Section */}
-        <div className="text-center md:text-left flex-1">
-          <h1 className="text-3xl md:text-5xl font-bold text-blue-900 mb-4 leading-tight">
-            Welcome to <span className="text-green-600">CLINZEE</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-6">
-            Discover premium home cleaning products — safe, affordable, and powerful. From liquid detergent to toilet cleaner, we've got your home covered.
-          </p>
-          <a
-            href="/products"
-            className="inline-block px-6 py-3 bg-green-600 text-white font-semibold rounded-md shadow hover:bg-green-700 transition"
-          >
-            Explore Products
-          </a>
+        {/* Image - First on mobile, second on desktop */}
+        <div className="order-1 md:order-2 flex items-center justify-center">
+          <img
+            src={productImages[currentIndex]}
+            alt="CLINZEE Product"
+            className="w-full max-w-sm md:max-w-md object-contain transition-all duration-700 ease-in-out drop-shadow-xl"
+          />
         </div>
 
-        {/* Dynamic Floating Image Section */}
-        <div className="flex-1">
-          <img
-            key={currentImage} // forces re-render on image switch
-            src={currentImage}
-            alt="Clinzee Product"
-            width="320"
-            height="320"
-            className="w-full max-w-xs md:max-w-md mx-auto drop-shadow-md animate-float transition-all duration-500"
-          />
+        {/* Content - Second on mobile, first on desktop */}
+        <div className="order-2 md:order-1 text-center md:text-left">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-blue-900 leading-tight mb-8">
+            Trusted Hygiene for Every Household — Only with{" "}
+            <span className="text-blue-700">CLINZEE</span>
+          </h1>
+          <p className="text-gray-700 text-base md:text-lg mb-6 max-w-xl mx-auto md:mx-0">
+            CLINZEE products are thoughtfully crafted to meet the daily hygiene needs of Indian households.
+            From sparkling kitchens to spotless bathrooms, our powerful cleaning agents eliminate germs, 
+            fight grime, and leave behind a pleasant fragrance. Whether you live in a bustling city or a quiet village, 
+            CLINZEE ensures every corner of your home stays fresh, safe, and welcoming — because every family deserves cleanliness they can count on.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+            <a
+              href="/products"
+              className="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition"
+            >
+              Explore Products
+            </a>
+            <a
+              href="/contact"
+              className="bg-white border border-blue-700 text-blue-700 hover:bg-blue-50 font-semibold px-6 py-3 rounded-xl shadow-sm transition"
+            >
+              Contact Us
+            </a>
+          </div>
         </div>
       </div>
     </section>
