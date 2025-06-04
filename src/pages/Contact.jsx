@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
+import { db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+
 import IndiaFlag from "../assets/india-flag-xs.png";
+
 
 function Contact() {
   const navigate = useNavigate();
@@ -56,15 +59,21 @@ function Contact() {
       return;
     }
 
-    try {
-      const response = await axios.post("https://clinzee-backend.onrender.com/api/contact", formData);
-      console.log("response:", response);
-      // toast.success("Message sent successfully!");
-      navigate("/thank-you");
-    } catch (error) {
-      console.error("Contact form error:", error.response?.data || error.message);
-      toast.error("Something went wrong. Try again.");
-    }
+  try {
+    const docId = `${formData.firstName}-${Date.now()}`;
+
+    await setDoc(doc(db, "contacts", docId), {
+      ...formData,
+      createdAt: new Date(),
+    });
+
+    toast.success("Message sent successfully!");
+    navigate("/thank-you");
+  } catch (error) {
+    console.error("Firestore error:", error);
+    toast.error("Something went wrong. Try again.");
+  }
+
   };
 
   return (
