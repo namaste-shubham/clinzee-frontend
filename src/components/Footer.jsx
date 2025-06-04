@@ -41,10 +41,10 @@ const Footer = () => {
         <div>
           <h3 className="font-semibold mb-3 text-blue-800">Contact</h3>
           <p className="text-sm mb-1">
-            <span className="font-medium">Email:</span> omprakash62023@gmail.com
+            <span className="font-medium">Email:</span> support@clinzee.com
           </p>
           <p className="text-sm">
-            <span className="font-medium">Location:</span> Raxaul, Bihar
+            <span className="font-medium">Location:</span> Raxaul, Bihar-845305
           </p>
         </div>
       </div>
