@@ -3,15 +3,16 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { sendEmailViaMSG91 } from "../utils/sendEmail";
 
 import IndiaFlag from "../assets/india-flag-xs.png";
-
 
 function Contact() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    email: "",         // added email field
     phone: "",
     message: "",
   });
@@ -19,6 +20,7 @@ function Contact() {
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
+    email: "",         // error for email
     phone: "",
     message: "",
   });
@@ -26,7 +28,6 @@ function Contact() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Reset error for the field
     setErrors({ ...errors, [name]: "" });
 
     if (name === "phone") {
@@ -46,6 +47,11 @@ function Contact() {
     const newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid.";
+    }
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required.";
     } else if (formData.phone.length !== 10) {
@@ -55,25 +61,71 @@ function Contact() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      toast.error("Please fill all the details.");
+      toast.error("Please fill all the details correctly.");
       return;
     }
 
-  try {
-    const docId = `${formData.firstName}-${Date.now()}`;
+    try {
+      const docId = `${formData.firstName}-${Date.now()}`;
 
-    await setDoc(doc(db, "contacts", docId), {
-      ...formData,
-      createdAt: new Date(),
-    });
+      await setDoc(doc(db, "contacts", docId), {
+        ...formData,
+        createdAt: new Date(),
+      });
 
-    toast.success("Message sent successfully!");
-    navigate("/thank-you");
-  } catch (error) {
-    console.error("Firestore error:", error);
-    toast.error("Something went wrong. Try again.");
-  }
+      const commonData = {
+  from: {
+    email: "support@clinzee.com",
+  },
+  domain: "clinzee.com",
+};
 
+// Send email to support@clinzee.com
+await sendEmailViaMSG91({
+  ...commonData,
+  template_id: import.meta.env.VITE_MSG91_SUPPORT_TEMPLATE_ID,
+  recipients: [
+    {
+      to: [
+        {
+          email: "support@clinzee.com",
+          name: "Clinzee Support",
+        },
+      ],
+      variables: {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+      },
+    },
+  ],
+});
+
+// Send confirmation email to user
+await sendEmailViaMSG91({
+  ...commonData,
+  template_id: import.meta.env.VITE_MSG91_USER_TEMPLATE_ID,
+  recipients: [
+    {
+      to: [
+        {
+          email: formData.email,
+          name: `${formData.firstName} ${formData.lastName}`,
+        },
+      ],
+      variables: {
+        name: `${formData.firstName} ${formData.lastName}`,
+      },
+    },
+  ],
+});
+
+      navigate("/thank-you");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Something went wrong. Try again.");
+    }
   };
 
   return (
@@ -103,6 +155,18 @@ function Contact() {
             />
             {errors.lastName && <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>}
           </div>
+        </div>
+
+        <div>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+          {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
         </div>
 
         <div>
