@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { sendEmailViaMSG91 } from "../utils/sendEmail";
@@ -8,11 +8,14 @@ import { sendEmailViaMSG91 } from "../utils/sendEmail";
 import IndiaFlag from "../assets/india-flag-xs.png";
 
 function Contact() {
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    email: "",         // added email field
+    email: "", // added email field
     phone: "",
     message: "",
   });
@@ -20,7 +23,7 @@ function Contact() {
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
-    email: "",         // error for email
+    email: "", // error for email
     phone: "",
     message: "",
   });
@@ -45,8 +48,10 @@ function Contact() {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required.";
+    if (!formData.lastName.trim())
+      newErrors.lastName = "Last name is required.";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -61,9 +66,11 @@ function Contact() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      toast.error("Please fill all the details correctly.");
+      // toast.error("Please fill all the details correctly.");
       return;
     }
+
+    setLoading(true); // start loading
 
     try {
       const docId = `${formData.firstName}-${Date.now()}`;
@@ -74,59 +81,66 @@ function Contact() {
       });
 
       const commonData = {
-  from: {
-    email: "support@clinzee.com",
-    name: "CLINZEE Support"
-  },
-  domain: "clinzee.com",
-};
-
-// Send email to support@clinzee.com
-await sendEmailViaMSG91({
-  ...commonData,
-  recipients: [
-    {
-      to: [
-        {
+        from: {
           email: "support@clinzee.com",
-          name: "Clinzee Support",
+          name: "CLINZEE Support",
         },
-      ],
-      variables: {
-        name: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        phone: formData.phone,
-        message: formData.message,
-      },
-    },
-  ],
-  type: "admin" 
-});
+        domain: "clinzee.com",
+      };
 
-// Send confirmation email to user
-await sendEmailViaMSG91({
-  ...commonData,
-  recipients: [
-    {
-      to: [
-        {
-          email: formData.email,
+      // Send email to support@clinzee.com
+      await sendEmailViaMSG91({
+        ...commonData,
+        recipients: [
+          {
+            to: [
+              {
+                email: "support@clinzee.com",
+                name: "Clinzee Support",
+              },
+            ],
+            variables: {
+              name: `${formData.firstName} ${formData.lastName}`,
+              email: formData.email,
+              phone: formData.phone,
+              message: formData.message,
+            },
+          },
+        ],
+        type: "admin",
+      });
+
+      // Send confirmation email to user
+      await sendEmailViaMSG91({
+        ...commonData,
+        recipients: [
+          {
+            to: [
+              {
+                email: formData.email,
+                name: `${formData.firstName} ${formData.lastName}`,
+              },
+            ],
+            variables: {
+              name: `${formData.firstName} ${formData.lastName}`,
+              message: formData.message,
+            },
+          },
+        ],
+        type: "user",
+      });
+      // ✅ Only if everything succeeded
+      navigate("/thank-you", {
+        state: {
           name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
         },
-      ],
-      variables: {
-        name: `${formData.firstName} ${formData.lastName}`,
-        message: formData.message,
-      },
-    },
-  ],
-  type: "user" 
-});
-
-      navigate("/thank-you");
+      });
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Something went wrong. Try again.");
+      navigate("/error");
+    } finally {
+      setLoading(false); // stop loading after try or catch
     }
   };
 
@@ -144,7 +158,9 @@ await sendEmailViaMSG91({
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
-            {errors.firstName && <p className="text-red-600 text-sm mt-1">{errors.firstName}</p>}
+            {errors.firstName && (
+              <p className="text-red-600 text-sm mt-1">{errors.firstName}</p>
+            )}
           </div>
           <div className="w-1/2">
             <input
@@ -155,7 +171,9 @@ await sendEmailViaMSG91({
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
-            {errors.lastName && <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>}
+            {errors.lastName && (
+              <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>
+            )}
           </div>
         </div>
 
@@ -168,7 +186,9 @@ await sendEmailViaMSG91({
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
-          {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+          )}
         </div>
 
         <div>
@@ -187,7 +207,9 @@ await sendEmailViaMSG91({
               className="w-full p-2 outline-none"
             />
           </div>
-          {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone}</p>}
+          {errors.phone && (
+            <p className="text-red-600 text-sm mt-1">{errors.phone}</p>
+          )}
         </div>
 
         <div>
@@ -199,14 +221,50 @@ await sendEmailViaMSG91({
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
-          {errors.message && <p className="text-red-600 text-sm mt-1">{errors.message}</p>}
+          {errors.message && (
+            <p className="text-red-600 text-sm mt-1">{errors.message}</p>
+          )}
         </div>
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          disabled={loading}
+          className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-md text-white 
+    font-semibold transition-colors duration-200 
+    ${
+      loading
+        ? "bg-blue-400 cursor-not-allowed"
+        : "bg-blue-600 hover:bg-blue-700"
+    }
+  `}
         >
-          Submit
+          {loading ? (
+            <>
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+                ></path>
+              </svg>
+              Sending...
+            </>
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
     </div>
