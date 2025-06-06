@@ -116,6 +116,7 @@ await sendEmailViaMSG91({
       ],
       variables: {
         name: `${formData.firstName} ${formData.lastName}`,
+        message: formData.message,
       },
     },
   ],
