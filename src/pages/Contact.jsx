@@ -83,7 +83,6 @@ function Contact() {
 // Send email to support@clinzee.com
 await sendEmailViaMSG91({
   ...commonData,
-  template_id: import.meta.env.MSG91_SUPPORT_TEMPLATE_ID,
   recipients: [
     {
       to: [
@@ -100,12 +99,12 @@ await sendEmailViaMSG91({
       },
     },
   ],
+  type: "admin" 
 });
 
 // Send confirmation email to user
 await sendEmailViaMSG91({
   ...commonData,
-  template_id: import.meta.env.MSG91_USER_TEMPLATE_ID,
   recipients: [
     {
       to: [
@@ -120,6 +119,7 @@ await sendEmailViaMSG91({
       },
     },
   ],
+  type: "user" 
 });
 
       navigate("/thank-you");

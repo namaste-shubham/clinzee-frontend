@@ -13,7 +13,12 @@ export async function handler(event) {
   }
 
   try {
-    const { recipients, from, domain, template_id } = JSON.parse(event.body);
+    const { recipients, from, domain, type } = JSON.parse(event.body);
+
+    const template_id =
+      type === "admin"
+        ? process.env.MSG91_SUPPORT_TEMPLATE_ID
+        : process.env.MSG91_USER_TEMPLATE_ID;
 
     const authKey = process.env.MSG91_AUTHKEY;
     // this is your secret key from env vars

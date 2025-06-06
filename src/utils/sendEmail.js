@@ -1,16 +1,11 @@
-export async function sendEmailViaMSG91({
-  recipients,
-  from,
-  domain,
-  template_id,
-}) {
+export async function sendEmailViaMSG91({ recipients, from, domain, type }) {
   try {
     const response = await fetch("/.netlify/functions/sendEmail", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ recipients, from, domain, template_id }),
+      body: JSON.stringify({ recipients, from, domain, type }),
     });
 
     console.log("response::::", response);

@@ -20,7 +20,7 @@ const categories = [
   {
     name: "Toilet Cleaner",
     image: toiletCleanerImg,
-    description: "Kills 99.9% of germs. Leaves toilets sparkling and smelling fresh.",
+    description: "Powerfully cleans your toilet, leaving it sparkling fresh with a long-lasting fragrance.",
   },
   {
     name: "Dishwash Gel",
