@@ -76,6 +76,7 @@ function Contact() {
       const commonData = {
   from: {
     email: "support@clinzee.com",
+    name: "CLINZEE Support"
   },
   domain: "clinzee.com",
 };
