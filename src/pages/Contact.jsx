@@ -48,15 +48,35 @@ function Contact() {
     e.preventDefault();
 
     const newErrors = {};
+    // Field validation
     if (!formData.firstName.trim())
       newErrors.firstName = "First name is required.";
     if (!formData.lastName.trim())
       newErrors.lastName = "Last name is required.";
-    if (!formData.email.trim()) {
+
+    const email = formData.email.trim();
+    if (!email) {
       newErrors.email = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+    ) {
       newErrors.email = "Email is invalid.";
+    } else {
+      // Check for common email typos
+      const commonTypos = {
+        "gmeil.com": "gmail.com",
+        "gnail.com": "gmail.com",
+        "yaho.com": "yahoo.com",
+        "hotnail.com": "hotmail.com",
+      };
+      const domain = email.split("@")[1];
+      if (domain && commonTypos[domain]) {
+        newErrors.email = `Did you mean ${email.split("@")[0]}@${
+          commonTypos[domain]
+        }?`;
+      }
     }
+
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required.";
     } else if (formData.phone.length !== 10) {
@@ -66,7 +86,6 @@ function Contact() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      // toast.error("Please fill all the details correctly.");
       return;
     }
 
