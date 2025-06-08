@@ -4,9 +4,9 @@ import { useState } from "react";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { sendEmailViaMSG91 } from "../utils/sendEmail";
-import validator from "email-validator"; 
 
 import IndiaFlag from "../assets/india-flag-xs.png";
+import { isValidEmailDomain } from "../utils/validateEmail";
 
 function Contact() {
   const [loading, setLoading] = useState(false);
@@ -57,9 +57,12 @@ function Contact() {
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
-    } else if (!validator.validate(formData.email)) {
-      newErrors.email = "Email address is invalid."; // ✅ stricter check
-    }
+    } else {
+  const isValid = await isValidEmailDomain(formData.email);
+  if (!isValid) {
+    newErrors.email = "Please enter a valid email address.";
+  }
+}
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required.";
