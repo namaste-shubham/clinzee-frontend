@@ -4,6 +4,7 @@ import { useState } from "react";
 import { db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { sendEmailViaMSG91 } from "../utils/sendEmail";
+import validator from "email-validator"; 
 
 import IndiaFlag from "../assets/india-flag-xs.png";
 
@@ -54,27 +55,10 @@ function Contact() {
     if (!formData.lastName.trim())
       newErrors.lastName = "Last name is required.";
 
-    const email = formData.email.trim();
-    if (!email) {
+    if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
-    } else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
-    ) {
-      newErrors.email = "Email is invalid.";
-    } else {
-      // Check for common email typos
-      const commonTypos = {
-        "gmeil.com": "gmail.com",
-        "gnail.com": "gmail.com",
-        "yaho.com": "yahoo.com",
-        "hotnail.com": "hotmail.com",
-      };
-      const domain = email.split("@")[1];
-      if (domain && commonTypos[domain]) {
-        newErrors.email = `Did you mean ${email.split("@")[0]}@${
-          commonTypos[domain]
-        }?`;
-      }
+    } else if (!validator.validate(formData.email)) {
+      newErrors.email = "Email address is invalid."; // ✅ stricter check
     }
 
     if (!formData.phone.trim()) {
