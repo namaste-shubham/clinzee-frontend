@@ -32,6 +32,43 @@ const ProductDetail = () => {
         <div className="md:w-1/2 space-y-6 text-gray-700">
           <p className="text-lg leading-relaxed">{product.description}</p>
 
+{/* Refined subtle Contact button */}
+<div className="mt-4">
+  <a
+    href="/contact"
+    className="
+      inline-flex items-center gap-2
+      text-blue-700 hover:text-blue-900
+      border border-blue-700 hover:border-blue-900
+      px-4 py-1.5
+      rounded-lg
+      text-sm font-medium
+      transition duration-200
+      select-none
+      cursor-pointer
+      hover:bg-blue-100
+      hover:shadow-md
+      hover:scale-[1.03]
+    "
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-4 h-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16 12v6m-4-6v6m-4-6v6M9 10a3 3 0 106 0 3 3 0 00-6 0z"
+      />
+    </svg>
+    Contact for Order
+  </a>
+</div>
+
           {product.keyBenefits && (
             <section>
               <h3 className="text-2xl font-semibold text-blue-900 mb-3">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import hero1 from "../assets/hero1.png";
 import hero2 from "../assets/hero2.png";
 
@@ -12,26 +13,36 @@ const Hero = () => {
       setCurrentIndex((prevIndex) =>
         prevIndex === productImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="bg-blue-50 pt-28 md:pt-32 pb-6 md:pb-10 px-4">
-
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10">
-        
         {/* Image - First on mobile, second on desktop */}
         <div className="order-1 md:order-2 flex items-center justify-center">
-          <img
-            src={productImages[currentIndex]}
-            alt="CLINZEE Product"
-            className="w-full max-w-sm md:max-w-md object-contain transition-all duration-700 ease-in-out drop-shadow-xl"
-          />
+          {productImages.map((img, index) => (
+            <motion.img
+              key={index}
+              src={img}
+              alt="CLINZEE Product"
+              className="w-full max-w-sm md:max-w-md object-contain drop-shadow-xl absolute"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: index === currentIndex ? 1 : 0 }}
+              transition={{ duration: 0.7 }}
+              style={{ position: index === currentIndex ? "relative" : "absolute" }}
+            />
+          ))}
         </div>
 
         {/* Content - Second on mobile, first on desktop */}
-        <div className="order-2 md:order-1 text-center md:text-left">
+        <motion.div
+          className="order-2 md:order-1 text-center md:text-left"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
           <h1 className="text-2xl md:text-3xl font-extrabold text-blue-900 leading-tight mb-8">
             Trusted Hygiene for Every Household — Only with{" "}
             <span className="text-blue-700">CLINZEE</span>
@@ -56,7 +67,7 @@ const Hero = () => {
               Contact Us
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

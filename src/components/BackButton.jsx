@@ -1,31 +1,40 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const BackButton = () => (
-  <Link
-    to="/products"
-    className="
-      inline-flex items-center gap-1
-      px-3 py-1.5
-      bg-blue-600 text-white rounded-full
-      shadow-sm hover:bg-blue-700 active:bg-blue-800
-      transition-colors duration-150 ease-in-out
-      text-xs md:text-sm
-      font-medium select-none
-      max-w-xs mx-auto
-    "
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-3 w-3 md:h-4 md:w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
+const BackButton = () => {
+  const navigate = useNavigate();
+
+  return (
+    <button
+      onClick={() => navigate(-1)}
+      className="
+        group inline-flex items-center gap-2
+        text-blue-700 hover:text-white
+        bg-blue-100 hover:bg-blue-700
+        text-sm md:text-base font-semibold
+        px-4 py-2 rounded-full
+        shadow hover:shadow-lg
+        transition-all duration-300 ease-in-out
+      "
     >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-    Back to Products
-  </Link>
-);
+      {/* Beautiful curved tail arrow icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-[-2px] transition-transform duration-300"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+
+      <span className="group-hover:text-white">Back to Products</span>
+    </button>
+  );
+};
 
 export default BackButton;
