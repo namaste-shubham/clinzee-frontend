@@ -49,32 +49,40 @@ function Contact() {
     e.preventDefault();
 
     const newErrors = {};
-    // Field validation
-    if (!formData.firstName.trim())
-      newErrors.firstName = "First name is required.";
-    if (!formData.lastName.trim())
-      newErrors.lastName = "Last name is required.";
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required.";
-    } else {
+// Synchronous validations
+if (!formData.firstName.trim())
+  newErrors.firstName = "First name is required.";
+
+if (!formData.lastName.trim())
+  newErrors.lastName = "Last name is required.";
+
+if (!formData.email.trim()) {
+  newErrors.email = "Email is required.";
+} else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+  newErrors.email = "Email format is invalid.";
+} else {
+  // Only do domain validation if format looks fine
   const isValid = await isValidEmailDomain(formData.email);
   if (!isValid) {
     newErrors.email = "Please enter a valid email address.";
   }
 }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required.";
-    } else if (formData.phone.length !== 10) {
-      newErrors.phone = "Phone number must be 10 digits.";
-    }
-    if (!formData.message.trim()) newErrors.message = "Message is required.";
+if (!formData.phone.trim()) {
+  newErrors.phone = "Phone number is required.";
+} else if (formData.phone.length !== 10) {
+  newErrors.phone = "Phone number must be 10 digits.";
+}
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+if (!formData.message.trim())
+  newErrors.message = "Message is required.";
+
+if (Object.keys(newErrors).length > 0) {
+  setErrors(newErrors);
+  return;
+}
+
 
     setLoading(true); // start loading
 
