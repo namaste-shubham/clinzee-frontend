@@ -9,18 +9,35 @@ export const isValidEmailDomain = async (email) => {
     const { format_valid, mx_found, smtp_check, did_you_mean, domain } =
       res.data;
 
-    const domainTypos = [
-      "gmeil.com",
-      "gmal.com",
-      "gmai.com",
-      "gmial.com",
-      "gimail.com",
-    ];
-    const isTypo = did_you_mean || domainTypos.includes(domain.toLowerCase());
+    // List of common typos for manual detection
+    const commonTypos = {
+      "gmeil.com": "gmail.com",
+      "gemel.com": "gmail.com",
+      "gemeil.com": "gmail.com",
+      "gmal.com": "gmail.com",
+      "gmai.com": "gmail.com",
+      "gmial.com": "gmail.com",
+      "gimail.com": "gmail.com",
+      "gnail.com": "gmail.com",
+      "gimel.com": "gmail.com",
+      "gimeil.com": "gmail.com",
+      "hotmial.com": "hotmail.com",
+      "yaho.com": "yahoo.com",
+      "outlok.com": "outlook.com",
+    };
 
+    const domainLower = domain.toLowerCase();
+    const manualSuggestion = commonTypos[domainLower]
+      ? `${email.split("@")[0]}@${commonTypos[domainLower]}`
+      : null;
+
+    const isTypo = !!manualSuggestion;
     const isValid = format_valid && mx_found && smtp_check && !isTypo;
 
-    return { isValid, didYouMean: did_you_mean };
+    return {
+      isValid,
+      didYouMean: manualSuggestion || did_you_mean || null,
+    };
   } catch (err) {
     console.error("Mailboxlayer error:", err);
     return { isValid: false, didYouMean: null };
