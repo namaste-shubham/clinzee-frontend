@@ -1,40 +1,33 @@
 // Categories.jsx
-import detergentImg from "../assets/liquidDetergent.webp";
-import handwashImg from "../assets/handwash.webp";
-import toiletCleanerImg from "../assets/toiletCleaner.webp";
-import dishwashImg from "../assets/dishwash.webp";
-import phenylImg from "../assets/phenyl.webp";
-import redToiletCleaner from '../assets/redToiletCleaner.png';
-
 const categories = [
   {
     name: "Liquid Detergent",
-    image: detergentImg,
+    image: "/clinzee-liquidDetergent.webp",
     description: "Removes tough stains with gentle care.",
   },
   {
     name: "Hand Wash",
-    image: handwashImg,
+    image: "/clinzee-handwash.webp",
     description: "Soft on skin, tough on germs. Keeps your hands fresh and clean.",
   },
   {
     name: "Toilet Cleaner",
-    image: toiletCleanerImg,
+    image: "/clinzee-toiletCleaner.webp",
     description: "Powerfully cleans your toilet, leaving it sparkling fresh with a long-lasting fragrance.",
   },
   {
     name: "Dishwash Gel",
-    image: dishwashImg,
+    image: "/clinzee-dishwash.webp",
     description: "Cuts grease effectively. Makes your utensils shine like new.",
   },
   {
     name: "Phenyl",
-    image: phenylImg,
+    image: "/clinzee-phenyl.webp",
     description: "Powerful floor cleaner for a hygienic and fragrant home environment.",
   },
   {
     name: "Red Toilet Cleaner",
-    image: redToiletCleaner,
+    image: "/clinzee-redToiletCleaner.webp",
     description: "Thick formula for tough stains. Deep cleans and disinfects with ease.",
   },
 ];

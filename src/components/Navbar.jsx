@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/clinzee.png";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,7 +19,7 @@ const Navbar = () => {
         {/* Logo with link to home */}
         <Link to="/" className="flex items-center gap-3">
           <img
-            src={logo}
+            src={"clinzee-logo.webp"}
             alt="Clinzee Logo"
             className="h-16 w-auto drop-shadow-sm"
           />

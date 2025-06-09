@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import hero1 from "../assets/hero1.png";
-import hero2 from "../assets/hero2.png";
 
-const productImages = [hero1, hero2];
+const productImages = [
+  "/clinzee-products1.webp",
+  "/clinzee-products2.webp",
+];
+
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
