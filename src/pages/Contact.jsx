@@ -62,12 +62,18 @@ if (!formData.email.trim()) {
 } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
   newErrors.email = "Email format is invalid.";
 } else {
-  // Only do domain validation if format looks fine
-  const isValid = await isValidEmailDomain(formData.email);
+  const validationResponse = await isValidEmailDomain(formData.email);
+  const { isValid, didYouMean } = validationResponse;
+
   if (!isValid) {
-    newErrors.email = "Please enter a valid email address.";
+    if (didYouMean) {
+      newErrors.email = `Did you mean ${didYouMean}? Please enter a valid email.`;
+    } else {
+      newErrors.email = "Please enter a valid email address.";
+    }
   }
 }
+
 
 if (!formData.phone.trim()) {
   newErrors.phone = "Phone number is required.";

@@ -6,13 +6,23 @@ export const isValidEmailDomain = async (email) => {
 
   try {
     const res = await axios.get(url);
-    console.log("email validation check:::", res.data);
-    const { format_valid, mx_found, smtp_check } = res.data;
+    const { format_valid, mx_found, smtp_check, did_you_mean, domain } =
+      res.data;
 
-    // ✅ All three should be true for a solid check
-    return format_valid && mx_found && smtp_check;
+    const domainTypos = [
+      "gmeil.com",
+      "gmal.com",
+      "gmai.com",
+      "gmial.com",
+      "gimail.com",
+    ];
+    const isTypo = did_you_mean || domainTypos.includes(domain.toLowerCase());
+
+    const isValid = format_valid && mx_found && smtp_check && !isTypo;
+
+    return { isValid, didYouMean: did_you_mean };
   } catch (err) {
     console.error("Mailboxlayer error:", err);
-    return false;
+    return { isValid: false, didYouMean: null };
   }
 };
