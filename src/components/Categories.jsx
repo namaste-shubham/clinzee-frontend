@@ -1,34 +1,41 @@
-// Categories.jsx
+import { Link } from "react-router-dom";
+
 const categories = [
   {
     name: "Liquid Detergent",
     image: "/clinzee-liquidDetergent.webp",
     description: "Removes tough stains with gentle care.",
+    slug: "liquid-detergent",
   },
   {
     name: "Hand Wash",
     image: "/clinzee-handwash.webp",
     description: "Soft on skin, tough on germs. Keeps your hands fresh and clean.",
+    slug: "hand-wash",
   },
   {
     name: "Toilet Cleaner",
     image: "/clinzee-toiletCleaner.webp",
     description: "Powerfully cleans your toilet, leaving it sparkling fresh with a long-lasting fragrance.",
+    slug: "toilet-cleaner",
   },
   {
     name: "Dishwash Gel",
     image: "/clinzee-dishwash.webp",
     description: "Cuts grease effectively. Makes your utensils shine like new.",
+    slug: "dishwash-gel",
   },
   {
     name: "Phenyl",
     image: "/clinzee-phenyl.webp",
     description: "Powerful floor cleaner for a hygienic and fragrant home environment.",
+    slug: "phenyl",
   },
   {
     name: "Red Toilet Cleaner",
     image: "/clinzee-redToiletCleaner.webp",
     description: "Thick formula for tough stains. Deep cleans and disinfects with ease.",
+    slug: "red-toilet-cleaner",
   },
 ];
 
@@ -40,8 +47,9 @@ const Categories = () => (
 
     <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       {categories.map((item) => (
-        <div
+        <Link
           key={item.name}
+          to={`/products/${item.slug}`}
           className="bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 overflow-hidden flex flex-col"
         >
           <div className="h-52 bg-gradient-to-tr from-blue-100 to-green-100 flex items-center justify-center p-5">
@@ -55,7 +63,7 @@ const Categories = () => (
             <h3 className="text-lg font-bold text-blue-800 mb-1">{item.name}</h3>
             <p className="text-sm text-gray-600">{item.description}</p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   </section>
