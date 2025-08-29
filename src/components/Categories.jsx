@@ -26,16 +26,24 @@ const categories = [
     slug: "dishwash-gel",
   },
   {
-    name: "Phenyl",
+    name: "White Phenyl",
     image: "/clinzee-phenyl.webp",
     description: "Powerful floor cleaner for a hygienic and fragrant home environment.",
     slug: "phenyl",
   },
+  // {
+  //   name: "Red Toilet Cleaner",
+  //   image: "/clinzee-redToiletCleaner.webp",
+  //   description: "Thick formula for tough stains. Deep cleans and disinfects with ease.",
+  //   slug: "red-toilet-cleaner",
+  // },
   {
-    name: "Red Toilet Cleaner",
-    image: "/clinzee-redToiletCleaner.webp",
-    description: "Thick formula for tough stains. Deep cleans and disinfects with ease.",
-    slug: "red-toilet-cleaner",
+    name: "Floor Cleaner",
+    slug: "floor-cleaner",
+    image: "/clinzee-floorCleaner.webp",
+    description:
+      "Ensure spotless, germ-free floors with our Floor Cleaner.",
+    
   },
 ];
 
@@ -66,7 +74,24 @@ const Categories = () => (
         </Link>
       ))}
     </div>
+   {/* 👇 CTA Section */}
+  <div className="mt-12 text-center">
+    <h3 className="text-xl font-semibold text-blue-800 mb-3">
+      Looking for more?
+    </h3>
+    <p className="text-gray-600 mb-6">
+       
+      Explore the full range of <span className="font-medium text-blue-700"> CLINZEE products</span> crafted to keep your home fresh and clean.
+    </p>
+    <Link
+      to="/products"
+      className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full shadow hover:bg-blue-700 transition-all text-lg font-medium"
+    >
+      View All Products
+    </Link>
+  </div>
   </section>
+  
 );
 
 export default Categories;

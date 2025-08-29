@@ -39,7 +39,7 @@ export const products = [
     ],
   },
   {
-    name: "Red Toilet Cleaner",
+    name: "Bathroom Cleaner",
     slug: "red-toilet-cleaner",
     image: "/clinzee-redToiletCleaner.webp",
     description:
@@ -65,7 +65,7 @@ export const products = [
     ],
   },
   {
-    name: "Phenyl",
+    name: "White Phenyl",
     slug: "phenyl",
     image: "/clinzee-phenyl.webp",
     description:
@@ -75,6 +75,74 @@ export const products = [
       "Kills harmful germs and bacteria",
       "Efficiently removes dirt and stains",
       "Leaves a long-lasting refreshing fragrance",
+    ],
+  },
+
+  // 🔥 New products start here
+  {
+    name: "Kitchen Cleaner",
+    slug: "kitchen-cleaner",
+    image: "/clinzee-kitchenCleaner.webp",
+    description:
+      "Keep your kitchen grease-free and sparkling with our Kitchen Cleaner. Specially designed to cut through tough oil, stains, and food spills while leaving a hygienic and fresh-smelling surface.",
+    bg: "from-orange-100 to-orange-50",
+    keyBenefits: [
+      "Removes stubborn grease and food stains",
+      "Safe for tiles, counters, and stovetops",
+      "Leaves a hygienic, fresh fragrance",
+    ],
+  },
+  {
+    name: "Floor Cleaner",
+    slug: "floor-cleaner",
+    image: "/clinzee-floorCleaner.webp",
+    description:
+      "Ensure spotless, germ-free floors with our Floor Cleaner. Its powerful antibacterial formula removes dirt, kills germs, and leaves behind a pleasant, long-lasting fragrance for a refreshing home.",
+    bg: "from-teal-100 to-teal-50",
+    keyBenefits: [
+      "Removes dirt and sticky stains",
+      "Kills harmful germs and bacteria",
+      "Leaves long-lasting fragrance",
+    ],
+  },
+  {
+    name: "Pitambari Gel",
+    slug: "pitambari-gel",
+    image: "/clinzee-pitambariGel.webp",
+    description:
+      "Restore the shine of your brass, copper, and metal utensils with Pitambari Gel. Its gentle yet effective formula removes oxidation and tarnish, bringing back the natural glow without scratching.",
+    bg: "from-amber-100 to-amber-50",
+    keyBenefits: [
+      "Cleans brass, copper, and metal utensils",
+      "Removes tarnish & oxidation effectively",
+      "Restores natural shine without scratches",
+    ],
+  },
+
+  {
+    name: "Black Phenyl",
+    slug: "black-phenyl",
+    image: "/clinzee-blackPhenyl.webp",
+    description:
+      "A trusted solution for strong disinfecting needs, our Black Phenyl effectively kills germs, controls foul odors, and keeps your surroundings clean and safe with every use.",
+    bg: "from-gray-100 to-gray-50",
+    keyBenefits: [
+      "Strong disinfectant for deep cleaning",
+      "Eliminates foul odors instantly",
+      "Keeps surroundings hygienic and safe",
+    ],
+  },
+  {
+    name: "Glass Cleaner",
+    slug: "glass-cleaner",
+    image: "/clinzee-glassCleaner.webp",
+    description:
+      "Get crystal-clear, streak-free shine with our Glass Cleaner. Ideal for mirrors, windows, and glass surfaces, it quickly removes dust, smudges, and fingerprints for a spotless finish.",
+    bg: "from-sky-100 to-sky-50",
+    keyBenefits: [
+      "Streak-free formula for clear surfaces",
+      "Removes dust, smudges & fingerprints",
+      "Safe for mirrors, windows, and glass items",
     ],
   },
 ];
