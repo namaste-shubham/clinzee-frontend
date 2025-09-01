@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const isValidEmailDomain = async (email) => {
   const API_KEY = import.meta.env.VITE_MAILBOXLAYER_API_KEY;
-  const url = `https://apilayer.net/api/check?access_key=${API_KEY}&email=${email}&smtp=1&format=1`;
+  const url = `http://apilayer.net/api/check?access_key=${API_KEY}&email=${email}&smtp=1&format=1`;
 
   try {
     const res = await axios.get(url);
